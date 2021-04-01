@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=2.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="icon" href="https://miro.medium.com/max/457/1*jShZTENkxonZ8pLd0B-qhA.png">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script src="https://kit.fontawesome.com/f0a566aef1.js"></script>
+	<link rel="stylesheet" href="style.css">
+	<title>Sarcasm Detector</title>
+</head>
+<body>
+	<script>
+		if (document.readyState == 'complete') {
+			start()
+		} else {
+			document.onreadystatechange = function () {
+				if (document.readyState === "complete") {
+					start()
+				}
+			}
+		}
+		function start() {
+			var home_id = document.getElementById("home")
+			home_id.classList.toggle('trans')
+		}
+		function httpGet() {
+			var requestOptions = {
+				method: "GET",
+				redirect: "follow",
+			};
+
+			var home_id = document.getElementById("home")
+			var result_id = document.getElementById("result")
+			var spinner_id = document.getElementById("spinner")
+			var sentence_id = document.getElementById("sentence")
+
+			spinner_id.classList.toggle("inactive");
+			const query = sentence_id.value;
+
+
+			let url = `https://sarcasm-detector-ai.herokuapp.com/is_sarcastic/?sentence=${query}`;
+
+			fetch(url, requestOptions).then((response) => response.json())
+				.then((result) => {
+					sentence_id.value = ''
+					spinner_id.classList.toggle("inactive");
+					home_id.classList.toggle('inactive')
+					result_id.classList.toggle('inactive')
+					home_id.classList.toggle('trans')
+					setTimeout(function () {
+						result_id.classList.toggle('trans')
+					}, 200);
+					var result_text_id = document.getElementById("result_text")
+					if (result['is_sarcastic']) {
+						result_text_id.innerText = 'Sarcastic'
+					} else {
+						result_text_id.innerText = 'Not Sarcastic'
+					}
+				})
+		}
+		function back() {
+			var home_id = document.getElementById("home")
+			var result_id = document.getElementById("result")
+			result_id.classList.toggle("inactive");
+			result_id.classList.toggle('trans')
+			home_id.classList.toggle('inactive')
+			setTimeout(function () {
+				home_id.classList.toggle('trans')
+			}, 200);
+		}
+	</script>
+	<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+		<img src='https://miro.medium.com/max/457/1*jShZTENkxonZ8pLd0B-qhA.png' width="40" height="40" />
+		<span style="padding:4px"></span>
+		<a class="navbar-brand nav-text" href="#home">Sarcasm Detector</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active ">
+					<a class="nav-link nav-text" href="#home">Home</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<br />
+	<br />
+	<section id='home' class="container">
+		<div class="jumbotron hero text-center">
+			<h1>Sarcasm Detector</h1>
+		</div>
+		<br />
+		<div class="jumbotron">
+			<form onsubmit="event.preventDefault();httpGet();">
+				<div class="form-group">
+					<label for="sent">Please Enter your text below</label>
+					<input type="text" name='sentence' class="form-control" id="sentence"
+						placeholder="Enter your text here.." required>
+				</div>
+				<button class="buttonload btn btn-primary" type="submit">
+					<i class="fa fa-spinner fa-spin inactive" id='spinner'></i>Submit
+				</button>
+			</form>
+		</div>
+	</section>
+
+	<section id='result' class="container inactive">
+		<div class="text-center">
+			<div class="back-icon" onclick="back()">
+				<i class="fa fa-arrow-left"></i>
+			</div>
+			<div class="jumbotron hero">
+				<h1>Result</h1>
+			</div>
+		</div>
+		<br />
+		<div class="jumbotron">
+			<div class="typewriter">
+				<div class="typewriter-text" id='result_text'></div>
+			</div>
+
+		</div>
+	</section>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</html>

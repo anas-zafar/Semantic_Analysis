@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+matplotlib = "*"
+pandas = "*"
+nltk = "*"
+sentistrength = "*"
+conceptnet = "*"
+scikit-learn = "*"
+jupyter = "*"
+fastapi = "*"
+uvicorn = "*"
+gunicorn = "*"
+xlrd = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
